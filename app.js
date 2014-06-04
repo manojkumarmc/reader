@@ -23,6 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(app.router);
 app.use(express.static(clientDir));
+app.use('/ContentPackages', express.static('/home/mamc/Desktop/epub/SASAA10ePubLG.epub_FILES/html/ContentPackages'))
+app.use('/media', express.static('/home/mamc/Desktop/epub/SASAA10ePubLG.epub_FILES/html/media'))
 app.use(express.favicon(__dirname + '/client/img/palette.ico'));
 
 // development only
@@ -75,6 +77,18 @@ io.on('connection', function(socket) {
 
     socket.on('clickMe', function(data) {
 	console.log(data)
+	fs.readFile('/home/mamc/Desktop/epub/SASAA10ePubLG.epub_FILES/html/' + data, 'utf8', function(err, data) {
+
+	    if (err) {
+		console.log(err)
+		data = 'Error loading the page.'
+	    }
+
+	    data = data.replace(/<script[^>]*>/gi, ' <!-- ')
+	    data = data.replace(/<\/script>/gi, ' --> ')
+	    socket.emit('loadPage', data)
+
+	})
     })
 
 })

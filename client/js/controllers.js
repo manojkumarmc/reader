@@ -1,6 +1,7 @@
-myApp.controller('MyCtrl', ['$scope', 'socket', function($scope, socket) {
+myApp.controller('MyCtrl', ['$scope', '$sce',  'socket', function($scope, $sce,  socket) {
 
-    $scope.books = []
+    $scope.pages = []
+    $scope.pageText = ''
 
     $scope.clickMe = function(data) {
 	console.log('clicked on ' + data)
@@ -8,10 +9,13 @@ myApp.controller('MyCtrl', ['$scope', 'socket', function($scope, socket) {
     }
 
     socket.on('respond', function(data) {
-//	console.log(data)
-	data.forEach(function(book) {
-	    $scope.books.push(book)
+	data.forEach(function(page) {
+	    $scope.pages.push(page)
 	})
+    })
+
+    socket.on('loadPage', function(data) {
+	$scope.pageText =  $sce.trustAsHtml(data)
     })
 
 
