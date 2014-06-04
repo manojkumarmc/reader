@@ -1,4 +1,4 @@
-angular-node-seed
+reader
 =================
 
-angular-node-seed
+humble effort to create a reader which can render epub/pdf/doc.
